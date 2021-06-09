@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <script>
+        function setClientContext(xrm, formContext) {
+            window.Xrm = xrm;
+            window._formContext = formContext;
+            let accountLookup = formContext.getAttribute("parentaccountid").getValue();
+            if (accountLookup) {
+                Xrm.WebApi.retrieveRecord(accountLookup[0].entityType, accountLookup[0].id, "?$select=accountnumber").then(
+                    function success(result) {
+                        document.getElementById('accountNumber').value = result.accountnumber;
+                    },
+                    function(error) {
+                        console.log(error.message);
+                    }
+                );
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <label>Account Number:</label>
+        <input id="accountNumber" type="text" readonly>
+    </div>
+</body>
+
+</html>
